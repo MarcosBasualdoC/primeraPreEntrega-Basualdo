@@ -1,11 +1,12 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 const CartManager = require('../CartManager');
 
 
-const cartManager = new CartManager('../carts.json'); 
+const cartsFilePath = path.join(__dirname, '../carts.json');
+const cartManager = new CartManager(cartsFilePath);
 
-/////////7
 router.post('/', async (req, res) => {
     try {
         const newCart = await cartManager.createCart();
@@ -15,9 +16,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-//////
 router.get('/:cid', async (req, res) => {
-    const cartId = req.params.cid;
+    const cartId = parseInt(req.params.cid);
     try {
         const cart = await cartManager.getCartById(cartId);
         res.json(cart.products);
@@ -26,7 +26,15 @@ router.get('/:cid', async (req, res) => {
     }
 });
 
-/////////
+router.get('/', async (req, res) => {
+    try {
+        const allCarts = await cartManager.getAllCarts();
+        res.json(allCarts);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los carritos' });
+    }
+});
+
 router.post('/:cid/product/:pid', async (req, res) => {
     const cartId = req.params.cid;
     const productId = req.params.pid;

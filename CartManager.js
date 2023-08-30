@@ -70,6 +70,10 @@ class CartManager {
         return cart;
     }
 
+    getAllCarts() {
+        return this.carts;
+    }
+
     validateCartId(cartId) {
         return this.carts.some(cart => cart.id === cartId);
     }

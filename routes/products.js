@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path'); 
-const ProductManager = require('../ProductManager'); 
+const path = require('path');
+const ProductManager = require('../ProductManager');
 
 
 const productosFilePath = path.join(__dirname, '../productos.json');
 
-const productManager = new ProductManager(productosFilePath); 
+const productManager = new ProductManager(productosFilePath);
 
 //////
 router.get('/', async (req, res) => {
-    const limit = req.query.limit; 
+    const limit = req.query.limit;
     const products = await productManager.getProducts();
     if (limit) {
         const limitedProducts = products.slice(0, limit);
