@@ -53,11 +53,15 @@ class CartManager {
     }
 
     addProductToCart(cartId, productId, quantity) {
+        if (!quantity) {
+            quantity = 1;
+        }
+    
         const cartIndex = this.carts.findIndex(cart => cart.id === cartId);
         if (cartIndex === -1) {
             throw new Error("Carrito no encontrado");
         }
-
+    
         const cart = this.carts[cartIndex];
         const existingProduct = cart.products.find(product => product.product === productId);
         if (existingProduct) {
@@ -65,10 +69,12 @@ class CartManager {
         } else {
             cart.products.push({ product: productId, quantity });
         }
-
+    
         this.saveCarts();
         return cart;
     }
+    
+    
 
     getAllCarts() {
         return this.carts;
